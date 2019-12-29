@@ -18,7 +18,7 @@
             } else{
                 this.students.push(studentToRegister);
                 console.log(`${studentToRegister.name} has registered with the email: ${studentToRegister.email}`);
-                return this.students;
             }
+            return this.students;
     }
 }
