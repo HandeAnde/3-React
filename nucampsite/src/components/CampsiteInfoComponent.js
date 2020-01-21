@@ -1,5 +1,23 @@
-import React from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import React, { Component } from 'react';
+import {
+	Card,
+	CardImg,
+	CardText,
+	CardBody,
+	CardTitle,
+	Breadcrumb,
+	BreadcrumbItem,
+	Button,
+	Modal,
+	ModalHeader,
+	ModalBody,
+	Form,
+	FormGroup,
+	Input,
+	Label,
+	LocalForm,
+	Control
+} from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 function RenderCampsite({ campsite }) {
@@ -33,8 +51,56 @@ function RenderComments({ comments }) {
 						</p>
 					</div>
 				))}
+
+				<CommentForm />
 				<div />
 			</div>
+		);
+	}
+}
+
+class CommentModal extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {};
+
+		this.toggleModal = this.toggleModal.bind(this);
+	}
+
+	toggleModal() {
+		this.setState({
+			isModalOpen: !this.state.isModalOpen
+		});
+	}
+
+	handleSubmit(event) {
+		alert(`Username: ${this.username.value} Password: ${this.password.value} Remember: ${this.remember.checked}`);
+		this.toggleModal();
+		event.preventDefault();
+	}
+
+	render() {
+		return (
+			<Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+				<ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
+				<ModalBody>
+					<LocalForm onSubmit={(event) => this.handleSubmit(event)}>
+						<Control.select model=".rating" id="rating" />
+						<Control.text model=".author" id="author" />
+						<Control.textarea model=".text" id="text" />
+					</LocalForm>
+				</ModalBody>
+			</Modal>
+		);
+	}
+}
+
+class CommentForm extends Component {
+	render() {
+		return (
+			<Button type="submit" outline color="secondary">
+				<i className="fa fa-pencil" /> Submit Comment
+			</Button>
 		);
 	}
 }
