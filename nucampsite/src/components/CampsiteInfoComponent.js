@@ -22,8 +22,6 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !val || val.length <= len;
 const minLength = (len) => (val) => val && val.length >= len;
-const isNumber = (val) => !isNaN(+val);
-const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 function RenderCampsite({ campsite }) {
 	return (
@@ -96,13 +94,29 @@ class CommentForm extends Component {
 					<ModalBody>
 						<LocalForm onSubmit={(event) => this.handleSubmit(event)}>
 							<Label htmlFor="rating">Rating</Label>
-							<Control.select model=".rating" id="rating" name="rating" className="form-control">
+							<Control.select
+								model=".rating"
+								id="rating"
+								name="rating"
+								className="form-control"
+								validators={{ required }}
+							>
+								<option>Select</option>
 								<option>1</option>
 								<option>2</option>
 								<option>3</option>
 								<option>4</option>
 								<option>5</option>
 							</Control.select>
+							<Errors
+								className="text-danger"
+								model=".rating"
+								show="touched"
+								component="div"
+								messages={{
+									required: 'Required'
+								}}
+							/>
 							<Label htmlFor="author">Your Name</Label>
 							<Control.text
 								model=".author"
