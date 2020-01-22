@@ -14,11 +14,16 @@ import {
 	Form,
 	FormGroup,
 	Input,
-	Label,
-	LocalForm,
-	Control
+	Label
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Control, LocalForm, Errors } from 'react-redux-form';
+
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !val || val.length <= len;
+const minLength = (len) => (val) => val && val.length >= len;
+const isNumber = (val) => !isNaN(+val);
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 function RenderCampsite({ campsite }) {
 	return (
@@ -59,12 +64,18 @@ function RenderComments({ comments }) {
 	}
 }
 
-class CommentModal extends Component {
+class CommentForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
 
 		this.toggleModal = this.toggleModal.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
+	handleSubmit(values) {
+		console.log('Current state is: ' + JSON.stringify(values));
+		alert('Current state is: ' + JSON.stringify(values));
 	}
 
 	toggleModal() {
@@ -73,34 +84,60 @@ class CommentModal extends Component {
 		});
 	}
 
-	handleSubmit(event) {
-		alert(`Username: ${this.username.value} Password: ${this.password.value} Remember: ${this.remember.checked}`);
-		this.toggleModal();
-		event.preventDefault();
-	}
-
 	render() {
 		return (
-			<Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-				<ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
-				<ModalBody>
-					<LocalForm onSubmit={(event) => this.handleSubmit(event)}>
-						<Control.select model=".rating" id="rating" />
-						<Control.text model=".author" id="author" />
-						<Control.textarea model=".text" id="text" />
-					</LocalForm>
-				</ModalBody>
-			</Modal>
-		);
-	}
-}
+			<React.Fragment>
+				<Button type="submit" outline color="secondary" onClick={this.toggleModal}>
+					<i className="fa fa-pencil" /> Submit Comment
+				</Button>
 
-class CommentForm extends Component {
-	render() {
-		return (
-			<Button type="submit" outline color="secondary">
-				<i className="fa fa-pencil" /> Submit Comment
-			</Button>
+				<Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+					<ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
+					<ModalBody>
+						<LocalForm onSubmit={(event) => this.handleSubmit(event)}>
+							<Label htmlFor="rating">Rating</Label>
+							<Control.select model=".rating" id="rating" name="rating" className="form-control">
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+							</Control.select>
+							<Label htmlFor="author">Your Name</Label>
+							<Control.text
+								model=".author"
+								id="author"
+								name="author"
+								className="form-control"
+								placeholder="Your Name"
+								validators={{
+									required,
+									minLength: minLength(2),
+									maxLength: maxLength(15)
+								}}
+							/>
+							<Errors
+								className="text-danger"
+								model=".author"
+								show="touched"
+								component="div"
+								messages={{
+									required: 'Required',
+									minLength: 'Must be at least 2 characters',
+									maxLength: 'Must be 15 characters or less'
+								}}
+							/>
+							<Label htmlFor="text">Comment</Label>
+							<Control.textarea model=".text" id="text" name="text" className="form-control" rows="6" />
+							<div className="form-group" md={{ size: 10, offset: 2 }}>
+								<Button type="submit" color="primary">
+									Submit
+								</Button>
+							</div>
+						</LocalForm>{' '}
+					</ModalBody>{' '}
+				</Modal>
+			</React.Fragment>
 		);
 	}
 }
