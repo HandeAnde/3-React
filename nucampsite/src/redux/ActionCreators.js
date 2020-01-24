@@ -29,6 +29,16 @@ export const campsitesLoading = () => ({
 	type: ActionTypes.CAMPSITES_LOADING
 });
 
+export const campsitesFailed = (errMess) => ({
+	type: ActionTypes.CAMPSITES_FAILED,
+	payload: errMess
+});
+
+export const addCampsites = (campsites) => ({
+	type: ActionTypes.ADD_CAMPSITES,
+	payload: campsites
+});
+
 export const fetchComments = () => (dispatch) => {
 	return fetch(baseUrl + 'comments')
 		.then(
