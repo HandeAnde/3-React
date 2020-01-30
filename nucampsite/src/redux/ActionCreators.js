@@ -151,3 +151,41 @@ export const addPromotions = (promotions) => ({
 	type: ActionTypes.ADD_PROMOTIONS,
 	payload: promotions
 });
+
+export const fetchPartners = () => (dispatch) => {
+	dispatch(PartnersLoading());
+
+	return fetch(baseUrl + 'Partners')
+		.then(
+			(response) => {
+				if (response.ok) {
+					return response;
+				} else {
+					const error = new Error(`Error ${response.status}: ${response.statusText}`);
+					error.response = response;
+					throw error;
+				}
+			},
+			(error) => {
+				const errMess = new Error(error.message);
+				throw errMess;
+			}
+		)
+		.then((response) => response.json())
+		.then((Partners) => dispatch(addPartners(Partners)))
+		.catch((error) => dispatch(PartnersFailed(error.message)));
+};
+
+export const PartnersLoading = () => ({
+	type: ActionTypes.PARTNERS_LOADING
+});
+
+export const PartnersFailed = (errMess) => ({
+	type: ActionTypes.PARTNERS_FAILED,
+	payload: errMess
+});
+
+export const addPartners = (Partners) => ({
+	type: ActionTypes.ADD_PARTNERS,
+	payload: Partners
+});
