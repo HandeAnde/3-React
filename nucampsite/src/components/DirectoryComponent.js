@@ -3,12 +3,13 @@ import { Card, CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem } 
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import 'animate.css';
 
 function RenderDirectoryItem({ campsite }) {
 	return (
 		<Card>
 			<Link to={`/directory/${campsite.id}`}>
-			<CardImg width="100%" src={baseUrl + campsite.image} alt={campsite.name} />
+				<CardImg src={baseUrl + campsite.image} alt={campsite.name} />
 				<CardImgOverlay>
 					<CardTitle>{campsite.name}</CardTitle>
 				</CardImgOverlay>
@@ -30,11 +31,14 @@ function Directory(props) {
 		return (
 			<div className="container">
 				<div className="row">
-					<Loading />
+					<div className="col">
+						<Loading />
+					</div>
 				</div>
 			</div>
 		);
 	}
+
 	if (props.campsites.errMess) {
 		return (
 			<div className="container">
@@ -53,11 +57,11 @@ function Directory(props) {
 				<div className="col">
 					<Breadcrumb>
 						<BreadcrumbItem>
-							<Link to="/home">Home</Link>
+							<Link to="./home">Home</Link>
 						</BreadcrumbItem>
 						<BreadcrumbItem active>Directory</BreadcrumbItem>
 					</Breadcrumb>
-					<h2>Directory</h2>
+					<h2 className="animated bounce">Directory</h2>
 					<hr />
 				</div>
 			</div>

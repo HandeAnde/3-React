@@ -1,12 +1,12 @@
 body {
-	font-family: "Open Sans", sans-serif;
+	font-family: "Open-sans", "sans-serif";
 }
 
 h1,
 h2,
 h3,
 .card-body > h5 {
-	font-family: "Lobster", cursive;
+	font-family: "Lobster", "cursive";
 }
 
 h2 {
@@ -43,6 +43,7 @@ h2 {
 .navbar-dark {
 	background-color: #901cad;
 }
+
 .page-enter {
 	opacity: 0;
 	transform: translateX(-100%);
@@ -50,7 +51,7 @@ h2 {
 
 .page-enter-active {
 	opacity: 1;
-	transform: translateX(0%);
+	transform: translateX(0);
 	transition: 300ms ease-out;
 }
 
@@ -60,5 +61,5 @@ h2 {
 
 .page-exit-active {
 	opacity: 0;
-	transition: 300ms ease-out;
+	transition: 300ms ease-in;
 }
